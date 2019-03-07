@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/sortBy"
+        android:title="SortBy"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_sort_by_alpha_white_24dp">
+        <menu>
+            <item android:id="@+id/ByName"
+                android:title="Name" />
+
+            <item android:id="@+id/ByRollNo"
+                android:title="Roll No" />
+        </menu>
+
+    </item>
+
+    <item android:id="@+id/layoutSet"
+        android:title="Select Layoot"
+        android:icon="@drawable/ic_grid_off_white_24dp"
+        app:showAsAction="always"/>
+</menu>

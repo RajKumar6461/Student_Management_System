@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="recycleView_marginBottom">64dp</dimen>
+    <dimen name="mainActivity_textView_size">30dp</dimen>
+    <dimen name="mainActivity_button_height">60dp</dimen>
+    <dimen name="padding_4dp">4dp</dimen>
+    <dimen name="text_size_25sp">25sp</dimen>
+    <dimen name="text_size_35sp">35sp</dimen>
+    <dimen name="activity2_editText_height_50dp">50dp</dimen>
+    <dimen name="activity_editText_text_size_20sp">20sp</dimen>
+    <dimen name="padding_editText_5dp">5dp</dimen>
+    <dimen name="margin_30dp">30dp</dimen>
+    <dimen name="margin_10dp">10dp</dimen>
+</resources>
