@@ -24,16 +24,18 @@ import java.util.ArrayList;
  */
 public class StudentDataActivity extends AppCompatActivity {
 
+    public static final int REQUEST_CODE_ADD=2;
+    public static final int REQUEST_CODE_EDIT=1;
     private EditText mEditTextFirstName;
     private EditText mEditTextLastName;
     private EditText mEditTextId;
     private Button mButtonAdd;
     private int selectButtonOperation=0;
     private String typeAction;
+    private Intent mIntentForOtherActivity;
     private Bundle bundle;
     private Student editStudentDetail;
     private boolean errorHandling;
-    private ArrayList<Student> sudentArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,22 +43,18 @@ public class StudentDataActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main2);
 
         //setting id to edittext and button
-        mEditTextFirstName=(EditText) findViewById(R.id.editFirstName);
-        mEditTextLastName=(EditText) findViewById(R.id.editLastName);
-        mEditTextId=(EditText)findViewById(R.id.edit_Id);
-        mButtonAdd=(Button) findViewById(R.id.add);
+        initValues();
 
         //get data from intent from another activity
         bundle=getIntent().getExtras();
         typeAction=bundle.getString(Constants.TYPE_ACTION_FROM_MAIN_ACTIVITY);
 
         //check for type action if add then set button operation and get data
-        if(typeAction.equals("Add")){
-            selectButtonOperation=1;
-            sudentArrayList = (ArrayList<Student>) bundle.getSerializable(Constants.STUDENT_DATA);
+        if(typeAction.equals(Constants.TYPE_ACTION_FROM_MAIN_ACTIVITY_ADD)){
+            selectButtonOperation=REQUEST_CODE_ADD;
         }
         //check for type action if view then set get data from bundle and set to edittext and remove button
-        else if(typeAction.equals("View"))
+        else if(typeAction.equals(Constants.TYPE_ACTION_FROM_MAIN_ACTIVITY_VIEW))
         {
 
             Student viewStudentDetail=(Student) bundle.getSerializable(Constants.STUDENT_DATA);
@@ -70,9 +68,9 @@ public class StudentDataActivity extends AppCompatActivity {
         }
 
         //check for type action if Edit then set button operation and get data set the edit text
-        else if(typeAction.equals("Edit"))
+        else if(typeAction.equals(Constants.TYPE_ACTION_FROM_MAIN_ACTIVITY_EDIT))
         {
-            selectButtonOperation=2;
+            selectButtonOperation=REQUEST_CODE_EDIT;
             mButtonAdd.setText(Constants.BTN_CHANGE_TEXT_UPDATE);
             editStudentDetail=(Student) bundle.getSerializable(Constants.STUDENT_DATA);
             mEditTextFirstName.setText(editStudentDetail.getmFirstName().toUpperCase());
@@ -89,36 +87,26 @@ public class StudentDataActivity extends AppCompatActivity {
                 //This is used for validation purpose if it remains true then only data is added and update
                 errorHandling=true;
                 //check for button operation if 1 then operation of add
-                if(selectButtonOperation==1){
-                    addButtonOnClick();
+                switch (selectButtonOperation){
+                    case REQUEST_CODE_EDIT:
+                        editButtonOnClick();
+                        break;
+                    case REQUEST_CODE_ADD:
+                        addButtonOnClick();
+                        break;
+                }
 
-                }
-                //check for button operation if 2 then operation of Edit
-                else if(selectButtonOperation==2)
-                    {
-                    editButtonOnClick();
-                }
             }
         });
 
     }
 
-    /**
-     * This method used to check enter Roll No is duplicate or not
-     * Used for validation purposes
-     *
-     * @param ID of string type
-     * @return true if Roll no is present false if not present
-     */
-    private boolean isCheckValidId(final String ID){
-        for(Student validStudent:sudentArrayList){
-            if(validStudent.getmId().equals(ID)){
-                return true;
-            }
-        }
-        return false;
+    private void initValues(){
+        mEditTextFirstName=(EditText) findViewById(R.id.editFirstName);
+        mEditTextLastName=(EditText) findViewById(R.id.editLastName);
+        mEditTextId=(EditText)findViewById(R.id.edit_Id);
+        mButtonAdd=(Button) findViewById(R.id.add);
     }
-
     /**
      * This function provide functionalities of add button
      *get data from edittext then validate
@@ -145,7 +133,7 @@ public class StudentDataActivity extends AppCompatActivity {
                 errorHandling = false;
             }
             //check duplicte Roll No
-            else if (isCheckValidId(sRollNo)) {
+            else if (ValidUtil.isCheckValidId((ArrayList<Student>) bundle.getSerializable(Constants.STUDENT_DATA),sRollNo)) {
                 mEditTextId.setError("Enter Different Roll_NO");
                 errorHandling = false;
             }
@@ -156,9 +144,9 @@ public class StudentDataActivity extends AppCompatActivity {
                 student.setFirstName(fName.toUpperCase());
                 student.setLastName(lName.toUpperCase());
                 student.setId(sRollNo);
-                Intent returnInten = new Intent();
-                returnInten.putExtra(Constants.STUDENT_DATA, student);
-                setResult(RESULT_OK, returnInten);
+                mIntentForOtherActivity=createIntent(MainActivity.class);
+                mIntentForOtherActivity.putExtra(Constants.STUDENT_DATA, student);
+                setResult(RESULT_OK, mIntentForOtherActivity);
                 finish();
             }
         }
@@ -183,13 +171,23 @@ public class StudentDataActivity extends AppCompatActivity {
         }
         //check if error is present or not
         if (errorHandling) {
-            Intent returnIntent=new Intent();
-            returnIntent.putExtra(Constants.FIRST_NAME,fName.toUpperCase());
-            returnIntent.putExtra(Constants.LAST_NAME,lName.toUpperCase());
-            setResult(RESULT_OK,returnIntent);
+            mIntentForOtherActivity=createIntent(MainActivity.class);
+            mIntentForOtherActivity.putExtra(Constants.FIRST_NAME,fName.toUpperCase());
+            mIntentForOtherActivity.putExtra(Constants.LAST_NAME,lName.toUpperCase());
+            setResult(RESULT_OK,mIntentForOtherActivity);
             finish();
         }
     }
 
+    private Intent createIntent(Class<?> studentDataActivityClass){
+        Intent intent=new Intent(this,studentDataActivityClass);
+        return intent;
+    }
+
+    private void setTextOfEditText(Student student){
+        mEditTextFirstName.setText(student.getmFirstName().toUpperCase());
+        mEditTextLastName.setText(student.getmLastName().toUpperCase());
+        mEditTextId.setText(student.getmId().toUpperCase());
+    }
 
 }

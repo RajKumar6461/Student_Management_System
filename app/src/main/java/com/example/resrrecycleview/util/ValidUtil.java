@@ -1,5 +1,8 @@
 package com.example.resrrecycleview.util;
 
+import com.example.resrrecycleview.model.Student;
+
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,5 +34,21 @@ public final class ValidUtil {
 
         return (matcher.matches());
 
+    }
+
+    /**
+     * This method used to check enter Roll No is duplicate or not
+     * Used for validation purposes
+     *
+     * @param ID of string type
+     * @return true if Roll no is present false if not present
+     */
+    public static boolean isCheckValidId(ArrayList<Student> sudentArrayList, final String ID){
+        for(Student validStudent:sudentArrayList){
+            if(validStudent.getmId().equals(ID)){
+                return true;
+            }
+        }
+        return false;
     }
 }
