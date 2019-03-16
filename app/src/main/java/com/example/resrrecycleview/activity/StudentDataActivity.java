@@ -1,14 +1,21 @@
 package com.example.resrrecycleview.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.example.resrrecycleview.asynctask.BackSetUpdateData;
 import com.example.resrrecycleview.constant.Constants;
 import com.example.resrrecycleview.R;
 import com.example.resrrecycleview.model.Student;
+import com.example.resrrecycleview.service.SetUpdateDbIntentService;
+import com.example.resrrecycleview.service.SetUpdateService;
 import com.example.resrrecycleview.util.ValidUtil;
 
 import java.util.ArrayList;
@@ -26,6 +33,10 @@ public class StudentDataActivity extends AppCompatActivity {
 
     public static final int REQUEST_CODE_ADD=2;
     public static final int REQUEST_CODE_EDIT=1;
+    public static final int ASYNC_TASK=0;
+    public static final int SERVICE=1;
+    public static final int INTENT_SERVICE=2;
+    public final static String[] ITEM_DAILOG={"AsyncTask" , "Service" , "Intent Service"};
     private EditText mEditTextFirstName;
     private EditText mEditTextLastName;
     private EditText mEditTextId;
@@ -36,6 +47,7 @@ public class StudentDataActivity extends AppCompatActivity {
     private Bundle bundle;
     private Student editStudentDetail;
     private boolean errorHandling;
+    private int select;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,35 +131,34 @@ public class StudentDataActivity extends AppCompatActivity {
 
         // validation for first name check used set error to edit text
             if (!ValidUtil.isValidName(fName)) {
-                mEditTextFirstName.setError("Enter Valid Name");
+                mEditTextFirstName.setError(getString(R.string.FirstNameError));
                 errorHandling = false;
             }
             // validation for last name check used set error to edit text
             if (!ValidUtil.isValidName(lName)) {
-                mEditTextLastName.setError("Enter Valid Name");
+                mEditTextLastName.setError(getString(R.string.LastNameError));
                 errorHandling = false;
             }
             // validation for Roll No check used set error to edit text
             if (!ValidUtil.isValidId(sRollNo)) {
-                mEditTextId.setError("Enter Valid Roll_No");
+                mEditTextId.setError(getString(R.string.RollNoError));
                 errorHandling = false;
             }
             //check duplicte Roll No
             else if (ValidUtil.isCheckValidId((ArrayList<Student>) bundle.getSerializable(Constants.STUDENT_DATA),sRollNo)) {
-                mEditTextId.setError("Enter Different Roll_NO");
+                mEditTextId.setError(getString(R.string.DifferentRollNo));
                 errorHandling = false;
             }
             //check if error is present or not
             if (errorHandling) {
 
-                Student student = new Student();
-                student.setFirstName(fName.toUpperCase());
-                student.setLastName(lName.toUpperCase());
-                student.setId(sRollNo);
+                Student student = new Student(fName.toUpperCase(),lName.toUpperCase(),sRollNo);
+
                 mIntentForOtherActivity=createIntent(MainActivity.class);
                 mIntentForOtherActivity.putExtra(Constants.STUDENT_DATA, student);
                 setResult(RESULT_OK, mIntentForOtherActivity);
-                finish();
+                generateAlertDialog(sRollNo,fName+" "+lName,Constants.TYPE_ACTION_FROM_MAIN_ACTIVITY_ADD);
+
             }
         }
 
@@ -161,21 +172,21 @@ public class StudentDataActivity extends AppCompatActivity {
 
         // validation for first name check used set error to edit text
         if (!ValidUtil.isValidName(fName)) {
-            mEditTextFirstName.setError("Enter Valid Name");
+            mEditTextFirstName.setError(getString(R.string.LastNameError));
             errorHandling = false;
         }
         // validation for last name check used set error to edit text
         if (!ValidUtil.isValidName(lName)) {
-            mEditTextLastName.setError("Enter Valid Name");
+            mEditTextLastName.setError(getString(R.string.LastNameError));
             errorHandling = false;
         }
         //check if error is present or not
         if (errorHandling) {
             mIntentForOtherActivity=createIntent(MainActivity.class);
-            mIntentForOtherActivity.putExtra(Constants.FIRST_NAME,fName.toUpperCase());
-            mIntentForOtherActivity.putExtra(Constants.LAST_NAME,lName.toUpperCase());
+            mIntentForOtherActivity.putExtra(Constants.FIRST_NAME,fName);
+            mIntentForOtherActivity.putExtra(Constants.LAST_NAME,lName);
             setResult(RESULT_OK,mIntentForOtherActivity);
-            finish();
+            generateAlertDialog(editStudentDetail.getmId(),fName+" "+lName,Constants.TYPE_ACTION_FROM_MAIN_ACTIVITY_EDIT);
         }
     }
 
@@ -188,6 +199,66 @@ public class StudentDataActivity extends AppCompatActivity {
         mEditTextFirstName.setText(student.getmFirstName().toUpperCase());
         mEditTextLastName.setText(student.getmLastName().toUpperCase());
         mEditTextId.setText(student.getmId().toUpperCase());
+    }
+
+    /**
+     * This method used to generate Dialog Box having 3 choose for Background thread
+     *
+     * @param rollNo of String type
+     * @param fullName of String type
+     * @param typeOperation of String type used to check operation
+     */
+
+    private void generateAlertDialog(final String rollNo, final String fullName, final String typeOperation){
+
+        final AlertDialog.Builder mBuilder=new AlertDialog.Builder(StudentDataActivity.this);
+        if(selectButtonOperation==REQUEST_CODE_EDIT)
+            mBuilder.setTitle(R.string.UpdateDialogBoxTitle);
+        else
+            mBuilder.setTitle(R.string.AddDialogBoxTitle);
+
+        //setting SingleChoiceItem onClick
+        mBuilder.setSingleChoiceItems(ITEM_DAILOG, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                //set which choice is selected
+                select=which;
+                dialog.dismiss();
+
+                switch (select){
+                    case ASYNC_TASK:
+                       (new BackSetUpdateData(StudentDataActivity.this)).execute(typeOperation,rollNo,fullName);
+                       finish();
+                        break;
+                    case SERVICE:
+                        Intent service=new Intent(StudentDataActivity.this, SetUpdateDbIntentService.class);
+                        service.putExtra(Constants.TYPE_ACTION_FROM_MAIN_ACTIVITY,typeOperation);
+                        service.putExtra(Constants.ROLL_NO,rollNo);
+                        service.putExtra(Constants.STUDENT_FULL_NAME,fullName);
+                        startService(service);
+                        finish();
+                        break;
+                    case INTENT_SERVICE:
+                        Intent intentForService=new Intent(StudentDataActivity.this, SetUpdateDbIntentService.class);
+                        intentForService.putExtra(Constants.TYPE_ACTION_FROM_MAIN_ACTIVITY,typeOperation);
+                        intentForService.putExtra(Constants.ROLL_NO,rollNo);
+                        intentForService.putExtra(Constants.STUDENT_FULL_NAME,fullName);
+                        startService(intentForService);
+                        finish();
+                        break;
+                }
+            }
+        });
+        mBuilder.setNeutralButton(R.string.CencelNeuteralButtonText, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        AlertDialog mDialog=mBuilder.create();
+        mDialog.show();
+
     }
 
 }

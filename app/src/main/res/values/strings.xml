@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">ResrRecycleView</string>
+    <string name="FirstNameError">Enter Valid Name</string>
+    <string name="LastNameError">Enter Valid Name</string>
+    <string name="RollNoError">Enter Valid Roll_No</string>
+    <string name="DifferentRollNo">Enter Different Roll_NO</string>
+    <string name="UpdateDialogBoxTitle">Updated By</string>
+    <string name="AddDialogBoxTitle">Added  By</string>
+    <string name="CencelNeuteralButtonText">Cencel</string>
+    <string name="OkButtonText">ok</string>
 
 </resources>

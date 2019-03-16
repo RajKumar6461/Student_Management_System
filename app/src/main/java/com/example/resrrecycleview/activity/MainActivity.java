@@ -18,10 +18,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.resrrecycleview.asynctask.BackProcessGetData;
 import com.example.resrrecycleview.comparator.SortByName;
 import com.example.resrrecycleview.comparator.SortByRollNo;
 import com.example.resrrecycleview.constant.Constants;
 import com.example.resrrecycleview.R;
+import com.example.resrrecycleview.database.StudentDatabaseHelper;
 import com.example.resrrecycleview.model.Student;
 import com.example.resrrecycleview.adapter.StudentAdapter;
 
@@ -44,7 +46,7 @@ import java.util.Collections;
  * @author Raj Kumar Soni
  */
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements BackProcessGetData.Callback {
 
     public static final int VIEW=0;
     public static final int EDIT=1;
@@ -62,24 +64,21 @@ public class MainActivity extends AppCompatActivity {
     private int positionEditStudentData;
     private RecyclerView mRecyclerView;
     private boolean toogleLayout=false;
+    private StudentDatabaseHelper mStudentDatabaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+       // mStudent=mStudentDatabaseHelper.getData();
         //For initializing values and set up Adapter
         initValues();
+        (new BackProcessGetData(this,this)).execute();
 
-        mAdapter.setOnClickListener(new StudentAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(final int position) {
-
-               onClickOfAdapter(position);
-            }
-        });
 
         //set Onclick on Add btn
+
         mButtonAddCuurent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -119,14 +118,15 @@ public class MainActivity extends AppCompatActivity {
                     if(resultCode==RESULT_OK) {
 
                         //Add Object in Student ArrayList at possition
-                        int possition = 0;
+                        int possitionInsertStudent = 0;
                         //get data from another Activity
                         Student sudStudent = (Student) data.getSerializableExtra(Constants.STUDENT_DATA);
-                        mStudent.add(possition, sudStudent);
+                        //mStudentDatabaseHelper.addData(sudStudent.getmId(),sudStudent.getmFirstName()+" "+sudStudent.getmLastName());
+                        mStudent.add(possitionInsertStudent, sudStudent);
 
                         //As size of ArrayList>0 setting visibility of back textView to gone
                         if (mTextView.getVisibility() == View.VISIBLE) mTextView.setVisibility(View.GONE);
-                        mAdapter.notifyItemInserted(possition);
+                        mAdapter.notifyItemInserted(possitionInsertStudent);
                         Toast.makeText(this,Constants.ADD_TOAST,Toast.LENGTH_SHORT).show();
                     }
                     break;
@@ -140,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
                         suStudent.setFirstName(fName);
                         suStudent.setLastName(lName);
                         mAdapter.notifyItemChanged(positionEditStudentData);
+                        //mStudentDatabaseHelper.update_name(fName+" "+lName,suStudent.getmId());
                         Toast.makeText(this,Constants.UPDATE_TOAST,Toast.LENGTH_SHORT).show();
                     }
                     break;
@@ -254,7 +255,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        mBuilder.setNeutralButton("Cencel", new DialogInterface.OnClickListener() {
+        mBuilder.setNeutralButton(R.string.CencelNeuteralButtonText, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
@@ -268,35 +269,30 @@ public class MainActivity extends AppCompatActivity {
         mTextView = (TextView) findViewById(R.id.no_data);
         mButtonAddCuurent = findViewById(R.id.add_data);
         mRecyclerView = (RecyclerView) findViewById(R.id.recycle);
-
-        if (mStudent.size() == Constants.CHECK_ARRAYLIST_SIZE_ZERO) {
-            mTextView.setText(NO_DATA);
-        }
-
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // setting ArrayList to Adapter of RecycleView
-        mAdapter = new StudentAdapter(mStudent);
-        mRecyclerView.setAdapter(mAdapter);
+
     }
 
     private void deleteDialog(final int pos){
         //setting new Dialog box for asking ok/cencel
         AlertDialog.Builder builderForAlert=new AlertDialog.Builder(MainActivity.this);
         builderForAlert.setTitle(Constants.DELETE_ALERT_DIALOG_TITLE);
-        builderForAlert.setNeutralButton("Cencel", new DialogInterface.OnClickListener() {
+        builderForAlert.setNeutralButton(R.string.CencelNeuteralButtonText, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
             }
         });
-        builderForAlert.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+        builderForAlert.setPositiveButton(R.string.OkButtonText, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
                 //Object is Deleted when pressed ok from Student ArrayList where item is clicked
+                 mStudentDatabaseHelper=new StudentDatabaseHelper(MainActivity.this);
+            mStudentDatabaseHelper.deleteContact(mStudent.get(pos).getmId());
                 mStudent.remove(pos);
-
                 mAdapter.notifyDataSetChanged();
 
                 //condition for checking ArrayList size is 0 if yes then setting back textView to Vissible
@@ -313,5 +309,32 @@ public class MainActivity extends AppCompatActivity {
     private Intent createIntent(Class<?> studentDataActivityClass){
         Intent intent=new Intent(this,studentDataActivityClass);
         return intent;
+    }
+
+    /**
+     * This method used to Communicate with UI thread
+     * @param out ArrayList of student class from AsyncTask get list from DB
+     */
+
+    @Override
+    public void getOutput(ArrayList<Student> out) {
+        mStudent=out;
+        if (mStudent.size() == Constants.CHECK_ARRAYLIST_SIZE_ZERO||mStudent==null) {
+            mTextView.setText(NO_DATA);
+        }
+
+        mAdapter = new StudentAdapter(mStudent);
+        mRecyclerView.setAdapter(mAdapter);
+
+        // settting the onclick to Adapter
+        mAdapter.setOnClickListener(new StudentAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(final int position) {
+
+                //
+                onClickOfAdapter(position);
+            }
+        });
+
     }
 }

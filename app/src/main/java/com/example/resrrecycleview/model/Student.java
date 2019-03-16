@@ -12,6 +12,15 @@ public class Student implements Serializable {
     private String mLastName;
     private String mId;
 
+    public Student() {
+    }
+
+    public Student(String mFirstName, String mLastName, String mId) {
+        this.mFirstName = mFirstName;
+        this.mLastName = mLastName;
+        this.mId = mId;
+    }
+
     public void setFirstName(final String firstname){
         this.mFirstName=firstname;
     }

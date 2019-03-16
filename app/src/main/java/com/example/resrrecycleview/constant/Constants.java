@@ -18,6 +18,7 @@ public final class Constants {
     public static final String FIRST_NAME="fname";
 
     // used for intent purpose to send data from one activity to other
+    public static final String STUDENT_FULL_NAME="Studentname";
     public static final String LAST_NAME="lname";
 
     // used for intent purpose to send data from one activity to other
