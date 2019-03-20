@@ -5,6 +5,9 @@ public final class Constants {
     // used for intent purpose to send data from one activity to other of Student type
     public static final String STUDENT_DATA="student_data";
 
+    public static final String STUDENT_DATA_List="student_data_List";
+
+
     //used for intent purpose to send data from one activity to other define action to other activity
     public static final String TYPE_ACTION_FROM_MAIN_ACTIVITY="Action Performed";
 
@@ -47,6 +50,8 @@ public final class Constants {
     public static final String GRID_LAYOUT_RECYCLER_VIEW="Grid is Selected";
 
     public static final String LINEAR_LAYOUT_RECYCLER_VIEW="Linear is Selected";
+
+
 
 
 

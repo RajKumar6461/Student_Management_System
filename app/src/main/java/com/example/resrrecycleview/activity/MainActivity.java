@@ -4,7 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,14 +22,18 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.resrrecycleview.adapter.ViewPagerAdapter;
 import com.example.resrrecycleview.asynctask.BackProcessGetData;
 import com.example.resrrecycleview.comparator.SortByName;
 import com.example.resrrecycleview.comparator.SortByRollNo;
 import com.example.resrrecycleview.constant.Constants;
 import com.example.resrrecycleview.R;
 import com.example.resrrecycleview.database.StudentDatabaseHelper;
+import com.example.resrrecycleview.fragment.AddUpdateFragment;
+import com.example.resrrecycleview.fragment.StudentListFragment;
 import com.example.resrrecycleview.model.Student;
 import com.example.resrrecycleview.adapter.StudentAdapter;
+import com.example.resrrecycleview.util.CommunicationFragments;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,8 +54,56 @@ import java.util.Collections;
  * @author Raj Kumar Soni
  */
 
-public class MainActivity extends AppCompatActivity implements BackProcessGetData.Callback {
+public class MainActivity extends AppCompatActivity implements CommunicationFragments
+{
 
+    private TabLayout mTabLayout;
+    private ViewPager mViewPager;
+
+    @Override
+    public void onCreate( Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        mViewPager = findViewById(R.id.view_pager);
+        mViewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager()));
+
+        mTabLayout = findViewById(R.id.tab_layout);
+        mTabLayout.setupWithViewPager(mViewPager);
+
+    }
+
+    public void changeTab() {
+
+        if(mViewPager.getCurrentItem()==0)
+        {
+           mViewPager.setCurrentItem(1);
+        }
+
+        else if(mViewPager.getCurrentItem() == 1)
+        {
+            mViewPager.setCurrentItem(0);
+        }
+
+
+
+    }
+    @Override
+    public void communication(Bundle bundle) {
+        if(mViewPager.getCurrentItem()==0){
+            String tag = "android:switcher:" + R.id.view_pager + ":" + 1;
+            AddUpdateFragment f = (AddUpdateFragment) getSupportFragmentManager().findFragmentByTag(tag);
+            f.update(bundle);
+            changeTab();
+        }else if(mViewPager.getCurrentItem()==1){
+            String tag = "android:switcher:" + R.id.view_pager + ":" + 0;
+            StudentListFragment f = (StudentListFragment) getSupportFragmentManager().findFragmentByTag(tag);
+            f.update(bundle);
+            changeTab();
+        }
+    }
+}
+/*
     public static final int VIEW=0;
     public static final int EDIT=1;
     public static final int DELETE=2;
@@ -108,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements BackProcessGetDat
      * @param resultCode of int type describe the result state
      * @param data of Intent type used to get data from another activity
      */
-
+/*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -154,7 +210,7 @@ public class MainActivity extends AppCompatActivity implements BackProcessGetDat
      * @param menu of Menu type
      * @return true after infalte the xml file
      */
-
+/*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_item,menu);
@@ -167,6 +223,7 @@ public class MainActivity extends AppCompatActivity implements BackProcessGetDat
      * @param item
      * @return
      */
+/*
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -315,7 +372,7 @@ public class MainActivity extends AppCompatActivity implements BackProcessGetDat
      * This method used to Communicate with UI thread
      * @param out ArrayList of student class from AsyncTask get list from DB
      */
-
+/*
     @Override
     public void getOutput(ArrayList<Student> out) {
         mStudent=out;
@@ -337,4 +394,6 @@ public class MainActivity extends AppCompatActivity implements BackProcessGetDat
         });
 
     }
-}
+
+    */
+

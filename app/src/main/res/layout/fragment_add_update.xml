@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.AddUpdateFragment">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent"
+
+        tools:context=".activity.StudentDataActivity">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/activity2_editText_height_50dp"
+            android:hint="Enter First Name"
+            android:textColorHint="@android:color/white"
+            android:inputType="text"
+            android:textSize="@dimen/activity_editText_text_size_20sp"
+            android:padding="@dimen/padding_editText_5dp"
+            android:maxLength="20"
+            android:textColor="@android:color/white"
+            android:singleLine="true"
+            android:background="@color/colorPrimaryDark"
+            android:layout_marginTop="@dimen/margin_30dp"
+            android:layout_marginLeft="@dimen/margin_10dp"
+            android:layout_marginRight="@dimen/margin_10dp"
+            android:id="@+id/editFirstName" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/activity2_editText_height_50dp"
+            android:hint="Enter Last  Name"
+            android:maxLength="20"
+            android:background="@color/colorPrimaryDark"
+            android:inputType="text"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/activity_editText_text_size_20sp"
+            android:textColorHint="@android:color/white"
+            android:padding="@dimen/padding_editText_5dp"
+            android:singleLine="true"
+            android:layout_marginTop="@dimen/margin_30dp"
+            android:layout_marginLeft="@dimen/margin_10dp"
+            android:layout_marginRight="@dimen/margin_10dp"
+            android:id="@+id/editLastName" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/activity2_editText_height_50dp"
+            android:hint="Roll No"
+            android:background="@color/colorPrimaryDark"
+            android:inputType="number"
+            android:padding="@dimen/padding_editText_5dp"
+            android:maxLength="8"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/activity_editText_text_size_20sp"
+            android:textColorHint="@android:color/white"
+            android:singleLine="true"
+            android:layout_marginTop="@dimen/margin_30dp"
+            android:layout_marginLeft="@dimen/margin_10dp"
+            android:layout_marginRight="@dimen/margin_10dp"
+            android:id="@+id/edit_Id" />
+
+        <Button
+            android:layout_width="180dp"
+            android:layout_height="60dp"
+            android:background="@color/colorPrimaryDark"
+            android:text="ADD"
+            android:layout_gravity="center"
+            android:textSize="28sp"
+            android:textColor="@android:color/white"
+            android:padding="@dimen/padding_4dp"
+            android:layout_marginVertical="200dp"
+            android:layout_marginLeft="@dimen/margin_10dp"
+            android:layout_marginRight="@dimen/margin_10dp"
+            android:id="@+id/add" />
+
+
+    </LinearLayout>
+
+</FrameLayout>
