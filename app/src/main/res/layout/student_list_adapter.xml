@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/student_list_ll_marginLeft"
+    android:layout_marginTop="@dimen/student_list_ll_margin_top"
+    android:orientation="vertical"
+    android:background="@color/green_color"
+    android:layout_marginRight="@dimen/student_list_ll_margin_right">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:hint="@string/student_list_tv_hint_name"
+        android:layout_marginLeft="@dimen/student_list_marginLeft"
+        android:layout_marginTop="@dimen/student_list_tv_marginTop"
+        android:textStyle="bold"
+        android:textSize="@dimen/student_list_tv_text_size_name"
+        android:id="@+id/textName"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/student_list_tv_height"
+        android:hint="@string/student_list_tv_hint"
+        android:layout_marginLeft="@dimen/student_list_marginLeft"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="@dimen/student_list_tv_marginTop"
+        android:textSize="@dimen/student_list_tv_text_size"
+        android:id="@+id/text"/>
+
+</LinearLayout>

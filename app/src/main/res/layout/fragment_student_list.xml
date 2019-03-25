@@ -35,7 +35,7 @@
             android:background="@color/colorPrimary"
             android:layout_alignParentBottom="true"
             android:id="@+id/add_data"
-            android:text="ADD"
+            android:text="@string/btn_add_text"
             android:textSize="@dimen/text_size_25sp"/>
 
     </RelativeLayout>

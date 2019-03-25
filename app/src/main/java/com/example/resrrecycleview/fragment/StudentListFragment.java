@@ -46,9 +46,7 @@ import java.util.Collections;
  */
 public class StudentListFragment extends Fragment  {
 
-    private CommunicationFragments mListener;
-    private View view;
-    private Context mContext;
+    public static final int GRID_SPAN=2;
     public static final int VIEW=0;
     public static final int EDIT=1;
     public static final int DELETE=2;
@@ -66,6 +64,11 @@ public class StudentListFragment extends Fragment  {
     private RecyclerView mRecyclerView;
     private boolean toogleLayout=false;
     private StudentDatabaseHelper mStudentDatabaseHelper;
+
+    private CommunicationFragments mListener;
+    private View view;
+    private Context mContext;
+    private int possitionInsertStudent = 0;
 
     public StudentListFragment() {
         // Required empty public constructor
@@ -229,7 +232,7 @@ public class StudentListFragment extends Fragment  {
             mListener = (CommunicationFragments) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + getString(R.string.interface_implement_message));
         }
 
     }
@@ -244,11 +247,6 @@ public class StudentListFragment extends Fragment  {
 
         switch(bundleFrom2Fragment.getString(Constants.TYPE_ACTION_FROM_MAIN_ACTIVITY)){
             case Constants.TYPE_ACTION_FROM_MAIN_ACTIVITY_ADD:
-
-
-                    //Add Object in Student ArrayList at possition
-                    int possitionInsertStudent = 0;
-                    //get data from another Activity
 
                     Student sudStudent = (Student) bundleFrom2Fragment.getSerializable(Constants.STUDENT_DATA);
                     //mStudentDatabaseHelper.addData(sudStudent.getmId(),sudStudent.getmFirstName()+" "+sudStudent.getmLastName());
@@ -317,7 +315,7 @@ public class StudentListFragment extends Fragment  {
                 if(!toogleLayout) {
                     toogleLayout=true;
                     item.setIcon(R.drawable.ic_grid_on_white_24dp);
-                    mRecyclerView.setLayoutManager(new GridLayoutManager(mContext,2));
+                    mRecyclerView.setLayoutManager(new GridLayoutManager(mContext,GRID_SPAN));
                     Toast.makeText(mContext,Constants.GRID_LAYOUT_RECYCLER_VIEW,Toast.LENGTH_LONG).show();
                 }else {
                     toogleLayout=false;

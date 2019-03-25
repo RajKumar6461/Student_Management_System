@@ -45,7 +45,7 @@ public class StudentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-       View view =LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.student_list,viewGroup,false);
+       View view =LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.student_list_adapter,viewGroup,false);
        StudentViewHolder studentViewHolder = new StudentViewHolder(view)
 ;       return studentViewHolder;
     }

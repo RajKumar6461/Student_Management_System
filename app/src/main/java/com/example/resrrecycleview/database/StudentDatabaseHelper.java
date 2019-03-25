@@ -22,6 +22,11 @@ public class StudentDatabaseHelper extends SQLiteOpenHelper {
     private static final String COL_NAME="Name";
     private static final String COL_ROLL="Roll_number";
     private static final String CREATE_TABLE="CREATE TABLE "+TABLE_NAME+"("+COL_ROLL+" TEXT PRIMARY KEY,"+COL_NAME+" TEXT)";
+    private static final String DROP_TABLE=" DROP TABLE IF EXISTS "+TABLE_NAME;
+    private static final String SELECT_ALL_DATA="SELECT * FROM "+TABLE_NAME;
+    private static final String REGEX_FOR_SPLIT=" ";
+    private static final int FIRST_NAME=0;
+    private static final int LAST_NAME=1;
 
     /**
      * Constructer to assign context to super class
@@ -40,7 +45,7 @@ public class StudentDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(" DROP TABLE IF EXISTS "+TABLE_NAME);
+        db.execSQL(DROP_TABLE);
         onCreate(db);
     }
 
@@ -67,15 +72,15 @@ public class StudentDatabaseHelper extends SQLiteOpenHelper {
 
     public ArrayList<Student> getData(){
         SQLiteDatabase db=this.getReadableDatabase();
-        Cursor cursor=db.rawQuery("SELECT * FROM "+TABLE_NAME,null);
+        Cursor cursor=db.rawQuery(SELECT_ALL_DATA,null);
         ArrayList<Student> arrayOfstore=new ArrayList<Student>();
         String roll_no;
         String fullName;
         while(cursor.moveToNext()){
             roll_no=cursor.getString(cursor.getColumnIndex(COL_ROLL));
             fullName=cursor.getString(cursor.getColumnIndex(COL_NAME));
-            String arr[]=fullName.split(" ");
-            Student studentDetails=new Student(arr[0],arr[1],roll_no);
+            String name_divided[]=fullName.split(REGEX_FOR_SPLIT);
+            Student studentDetails=new Student(name_divided[FIRST_NAME],name_divided[LAST_NAME],roll_no);
             arrayOfstore.add(studentDetails);
         }
         return arrayOfstore;

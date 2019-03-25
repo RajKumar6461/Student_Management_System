@@ -26,8 +26,7 @@ import java.util.ArrayList;
 
 public class AddUpdateFragment extends Fragment {
 
-    private View view;
-    private Context mContext;
+
 
     public static final int REQUEST_CODE_ADD=2;
     public static final int REQUEST_CODE_EDIT=1;
@@ -48,6 +47,9 @@ public class AddUpdateFragment extends Fragment {
     private StudentDatabaseHelper studentDatabaseHelper;
     private CommunicationFragments mListener;
     private ArrayList<Student> studentList=new ArrayList<>();
+
+    private View view;
+    private Context mContext;
 
     public AddUpdateFragment() {
         // Required empty public constructor
@@ -72,6 +74,10 @@ public class AddUpdateFragment extends Fragment {
 
         initValues();
 
+        if(getArguments()!=null){
+            bundle=getArguments();
+            viewPlease(bundle);
+        }
         //set click listener to button
         mButtonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -241,7 +247,7 @@ public class AddUpdateFragment extends Fragment {
             mListener = (CommunicationFragments) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + getString(R.string.interface_implement_message));
         }
     }
 
@@ -272,17 +278,18 @@ public class AddUpdateFragment extends Fragment {
                     mEditTextId.setEnabled(false);
                     //mButtonAdd.setVisibility(View.VISIBLE);
                     break;
-                case Constants.TYPE_ACTION_FROM_MAIN_ACTIVITY_VIEW:
-                    editStudentDetail=(Student) bundle.getSerializable(Constants.STUDENT_DATA);
-                    mEditTextFirstName.setText(editStudentDetail.getmFirstName().toUpperCase());
-                    mEditTextLastName.setText(editStudentDetail.getmLastName().toUpperCase());
-                    mEditTextId.setText(editStudentDetail.getmId().toUpperCase());
-                    mEditTextId.setEnabled(false);
-                    mEditTextFirstName.setEnabled(false);
-                    mEditTextLastName.setEnabled(false);
-                    mButtonAdd.setVisibility(View.GONE);
-                    break;
+
             }
+    }
+    private void viewPlease(Bundle b){
+        editStudentDetail=(Student) b.getSerializable(Constants.STUDENT_DATA);
+        mEditTextFirstName.setText(editStudentDetail.getmFirstName().toUpperCase());
+        mEditTextLastName.setText(editStudentDetail.getmLastName().toUpperCase());
+        mEditTextId.setText(editStudentDetail.getmId().toUpperCase());
+        mEditTextId.setEnabled(false);
+        mEditTextFirstName.setEnabled(false);
+        mEditTextLastName.setEnabled(false);
+        mButtonAdd.setVisibility(View.GONE);
     }
 
 }

@@ -21,6 +21,7 @@ import com.example.resrrecycleview.util.CommunicationFragments;
 public class StudentDataActivity extends AppCompatActivity implements CommunicationFragments {
     private AddUpdateFragment mAddUpdateFragment;
     private Bundle bundle;
+    private String message="Added";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,15 +31,11 @@ public class StudentDataActivity extends AppCompatActivity implements Communicat
         FragmentManager fragmentManager=getSupportFragmentManager();
         FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
         mAddUpdateFragment=new AddUpdateFragment();
-        fragmentTransaction.add(R.id.frag_container,mAddUpdateFragment,"HEloo");
+        fragmentTransaction.add(R.id.frag_container,mAddUpdateFragment,message);
         fragmentTransaction.commit();
+        mAddUpdateFragment.setArguments(bundle);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mAddUpdateFragment.update(bundle);
-    }
 
     @Override
     public void communication(Bundle bundle) {

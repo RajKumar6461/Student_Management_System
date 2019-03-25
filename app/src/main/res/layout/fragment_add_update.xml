@@ -66,15 +66,15 @@
             android:id="@+id/edit_Id" />
 
         <Button
-            android:layout_width="180dp"
-            android:layout_height="60dp"
+            android:layout_width="@dimen/add_fragment_btn_width"
+            android:layout_height="@dimen/add_fargment_btn_height"
             android:background="@color/colorPrimaryDark"
             android:text="ADD"
             android:layout_gravity="center"
-            android:textSize="28sp"
+            android:textSize="@dimen/add_fragment_btn_text_size"
             android:textColor="@android:color/white"
             android:padding="@dimen/padding_4dp"
-            android:layout_marginVertical="200dp"
+            android:layout_marginVertical="@dimen/add_fragment_btn_marginVertical"
             android:layout_marginLeft="@dimen/margin_10dp"
             android:layout_marginRight="@dimen/margin_10dp"
             android:id="@+id/add" />

@@ -13,5 +13,10 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="btn_add_text">ADD</string>
     <string name="btn_edit_text">UPDATE</string>
+    <string name="interface_implement_message">must implement OnFragmentInteractionListener</string>
+    <string name="list_fragment_tab_title">StudentList</string>
+    <string name="add_update_fragment_tab_title">Add/Update</string>
+    <string name="student_list_tv_hint">Roll No</string>
+    <string name="student_list_tv_hint_name">Name</string>
 
 </resources>

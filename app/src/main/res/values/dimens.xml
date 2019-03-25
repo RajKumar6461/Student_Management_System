@@ -11,4 +11,16 @@
     <dimen name="padding_editText_5dp">5dp</dimen>
     <dimen name="margin_30dp">30dp</dimen>
     <dimen name="margin_10dp">10dp</dimen>
+    <dimen name="add_fragment_btn_width">180dp</dimen>
+    <dimen name="add_fargment_btn_height">60dp</dimen>
+    <dimen name="add_fragment_btn_text_size">28sp</dimen>
+    <dimen name="add_fragment_btn_marginVertical">200dp</dimen>
+    <dimen name="student_list_marginLeft">20dp</dimen>
+    <dimen name="student_list_tv_marginTop">4dp</dimen>
+    <dimen name="student_list_tv_text_size">14sp</dimen>
+    <dimen name="student_list_tv_height">30dp</dimen>
+    <dimen name="student_list_tv_text_size_name">18sp</dimen>
+    <dimen name="student_list_ll_marginLeft">20dp</dimen>
+    <dimen name="student_list_ll_margin_top">20dp</dimen>
+    <dimen name="student_list_ll_margin_right">20dp</dimen>
 </resources>
