@@ -1,18 +1,23 @@
 package com.example.resrrecycleview.fragment;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import com.example.resrrecycleview.R;
-import com.example.resrrecycleview.activity.StudentDataActivity;
 import com.example.resrrecycleview.asynctask.BackSetUpdateData;
 import com.example.resrrecycleview.constant.Constants;
 import com.example.resrrecycleview.database.StudentDatabaseHelper;
@@ -47,7 +52,7 @@ public class AddUpdateFragment extends Fragment {
     private StudentDatabaseHelper studentDatabaseHelper;
     private CommunicationFragments mListener;
     private ArrayList<Student> studentList=new ArrayList<>();
-
+    private StudentBroadcastReceiver studentBroadcastReceiver;
     private View view;
     private Context mContext;
 
@@ -60,7 +65,7 @@ public class AddUpdateFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        studentBroadcastReceiver = new StudentBroadcastReceiver();
     }
 
     @Override
@@ -217,7 +222,8 @@ public class AddUpdateFragment extends Fragment {
                         startServiceWork(intentForService,rollNo,fullName,typeOperation);
                         break;
                 }
-                mListener.communication(bundle);
+               // mListener.communication(bundle);
+                studentBroadcastReceiver.sendBundleFromThis=bundle;
 
             }
         });
@@ -252,11 +258,29 @@ public class AddUpdateFragment extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        IntentFilter intentFilter = new IntentFilter(Constants.FILTER_ACTION_KEY);
+        LocalBroadcastManager.getInstance(mContext).registerReceiver(studentBroadcastReceiver,intentFilter);
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(mContext).unregisterReceiver(studentBroadcastReceiver);
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         mListener=null;
     }
 
+    /**
+     *
+     * @param bundleNew of bundle type having data from another activity
+     */
     public void update(Bundle bundleNew){
         bundle=bundleNew;
             typeAction=bundle.getString(Constants.TYPE_ACTION_FROM_MAIN_ACTIVITY);
@@ -266,8 +290,8 @@ public class AddUpdateFragment extends Fragment {
                     studentList=(ArrayList<Student>) bundle.getSerializable(Constants.STUDENT_DATA_List);
                     mButtonAdd.setText(getString(R.string.btn_add_text));
                     mEditTextId.setEnabled(true);
-
                     break;
+
                 case Constants.TYPE_ACTION_FROM_MAIN_ACTIVITY_EDIT:
                     selectButtonOperation=REQUEST_CODE_EDIT;
                     mButtonAdd.setText(Constants.BTN_CHANGE_TEXT_UPDATE);
@@ -281,6 +305,11 @@ public class AddUpdateFragment extends Fragment {
 
             }
     }
+
+    /**
+     * This method used to view data of Student
+     * @param b of bundle type get data from 1st activity for view
+     */
     private void viewPlease(Bundle b){
         editStudentDetail=(Student) b.getSerializable(Constants.STUDENT_DATA);
         mEditTextFirstName.setText(editStudentDetail.getmFirstName().toUpperCase());
@@ -292,4 +321,19 @@ public class AddUpdateFragment extends Fragment {
         mButtonAdd.setVisibility(View.GONE);
     }
 
+    public class StudentBroadcastReceiver extends BroadcastReceiver {
+        private Bundle sendBundleFromThis;
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+            vibrator.vibrate(Constants.VIBRATE_MILI_SECOND);
+            Toast.makeText(context, intent.getStringExtra(Constants.TYPE_ACTION_FROM_MAIN_ACTIVITY), Toast.LENGTH_SHORT).show();
+            if(sendBundleFromThis!=null) {
+                mListener.communication(sendBundleFromThis);
+            }
+        }
+
+    }
 }

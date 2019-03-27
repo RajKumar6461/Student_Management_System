@@ -51,8 +51,8 @@ public final class Constants {
 
     public static final String LINEAR_LAYOUT_RECYCLER_VIEW="Linear is Selected";
 
+    public static final String FILTER_ACTION_KEY = "interstellar";
 
-
-
+    public static final int VIBRATE_MILI_SECOND=500;
 
 }

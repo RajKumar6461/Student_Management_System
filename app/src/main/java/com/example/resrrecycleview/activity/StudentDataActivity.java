@@ -36,7 +36,6 @@ public class StudentDataActivity extends AppCompatActivity implements Communicat
         mAddUpdateFragment.setArguments(bundle);
     }
 
-
     @Override
     public void communication(Bundle bundle) {
 
