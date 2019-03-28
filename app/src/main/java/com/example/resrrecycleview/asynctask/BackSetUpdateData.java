@@ -12,10 +12,12 @@ import java.util.ArrayList;
 
 public class BackSetUpdateData extends AsyncTask<String,Void, String> {
     private Context mContext;
+    private SendData sendData;
 
 
-    public BackSetUpdateData(Context mContext) {
+    public BackSetUpdateData(Context mContext,SendData sendData) {
         this.mContext=mContext;
+        this.sendData=sendData;
     }
 
     @Override
@@ -25,7 +27,8 @@ public class BackSetUpdateData extends AsyncTask<String,Void, String> {
 
     @Override
     protected void onPostExecute(String out) {
-   Toast.makeText(mContext,out,Toast.LENGTH_SHORT).show();
+ //  Toast.makeText(mContext,out,Toast.LENGTH_SHORT).show();
+    sendData.callBack(out);
 
     }
 
@@ -51,6 +54,9 @@ public class BackSetUpdateData extends AsyncTask<String,Void, String> {
         return null;
 
     }
+    public interface SendData{
+        public void callBack(String str);
 
+    }
 }
 

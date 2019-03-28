@@ -11,4 +11,9 @@
     <dimen name="padding_editText_5dp">5dp</dimen>
     <dimen name="margin_30dp">30dp</dimen>
     <dimen name="margin_10dp">10dp</dimen>
+    <dimen name="student_adapter_padding">10dp</dimen>
+    <dimen name="student_adapter_marginLeft">20dp</dimen>
+    <dimen name="student_adapter_marginTop">4dp</dimen>
+    <dimen name="student_adapter_TextSize">18sp</dimen>
+    <dimen name="student_adapter_textSize_small">14sp</dimen>
 </resources>

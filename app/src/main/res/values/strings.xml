@@ -8,5 +8,7 @@
     <string name="AddDialogBoxTitle">Added  By</string>
     <string name="CencelNeuteralButtonText">Cencel</string>
     <string name="OkButtonText">ok</string>
+    <string name="student_adapter_tv_hint_rollNo">Roll No</string>
+    <string name="student_adapter_tvHint_name">Name</string>
 
 </resources>

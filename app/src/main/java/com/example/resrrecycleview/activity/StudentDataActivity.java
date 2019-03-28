@@ -34,7 +34,7 @@ import java.util.ArrayList;
  * 1 button to perform functions on data entered in edittext
  *
  */
-public class StudentDataActivity extends AppCompatActivity {
+public class StudentDataActivity extends AppCompatActivity implements BackSetUpdateData.SendData {
 
     public static final int REQUEST_CODE_ADD=2;
     public static final int REQUEST_CODE_EDIT=1;
@@ -67,36 +67,8 @@ public class StudentDataActivity extends AppCompatActivity {
         //get data from intent from another activity
         bundle=getIntent().getExtras();
         typeAction=bundle.getString(Constants.TYPE_ACTION_FROM_MAIN_ACTIVITY);
+        setButtonOperation();
 
-        //check for type action if add then set button operation and get data
-        if(typeAction.equals(Constants.TYPE_ACTION_FROM_MAIN_ACTIVITY_ADD)){
-            selectButtonOperation=REQUEST_CODE_ADD;
-        }
-        //check for type action if view then set get data from bundle and set to edittext and remove button
-        else if(typeAction.equals(Constants.TYPE_ACTION_FROM_MAIN_ACTIVITY_VIEW))
-        {
-
-            Student viewStudentDetail=(Student) bundle.getSerializable(Constants.STUDENT_DATA);
-            mEditTextFirstName.setText(viewStudentDetail.getmFirstName().toUpperCase());
-            mEditTextLastName.setText(viewStudentDetail.getmLastName().toUpperCase());
-            mEditTextId.setText(viewStudentDetail.getmId().toUpperCase());
-            mEditTextFirstName.setEnabled(false);
-            mEditTextLastName.setEnabled(false);
-            mEditTextId.setEnabled(false);
-            mButtonAdd.setVisibility(View.GONE);
-        }
-
-        //check for type action if Edit then set button operation and get data set the edit text
-        else if(typeAction.equals(Constants.TYPE_ACTION_FROM_MAIN_ACTIVITY_EDIT))
-        {
-            selectButtonOperation=REQUEST_CODE_EDIT;
-            mButtonAdd.setText(Constants.BTN_CHANGE_TEXT_UPDATE);
-            editStudentDetail=(Student) bundle.getSerializable(Constants.STUDENT_DATA);
-            mEditTextFirstName.setText(editStudentDetail.getmFirstName().toUpperCase());
-            mEditTextLastName.setText(editStudentDetail.getmLastName().toUpperCase());
-            mEditTextId.setText(editStudentDetail.getmId().toUpperCase());
-            mEditTextId.setEnabled(false);
-        }
 
         //set click listener to button
         mButtonAdd.setOnClickListener(new View.OnClickListener() {
@@ -125,6 +97,34 @@ public class StudentDataActivity extends AppCompatActivity {
         mEditTextLastName=(EditText) findViewById(R.id.editLastName);
         mEditTextId=(EditText)findViewById(R.id.edit_Id);
         mButtonAdd=(Button) findViewById(R.id.add);
+    }
+
+    private void setButtonOperation(){
+        //check for type action if add then set button operation and get data
+        switch (typeAction){
+            case Constants.TYPE_ACTION_FROM_MAIN_ACTIVITY_ADD:
+                selectButtonOperation=REQUEST_CODE_ADD;
+                break;
+            case Constants.TYPE_ACTION_FROM_MAIN_ACTIVITY_VIEW:
+                Student viewStudentDetail=(Student) bundle.getSerializable(Constants.STUDENT_DATA);
+                mEditTextFirstName.setText(viewStudentDetail.getmFirstName().toUpperCase());
+                mEditTextLastName.setText(viewStudentDetail.getmLastName().toUpperCase());
+                mEditTextId.setText(viewStudentDetail.getmId().toUpperCase());
+                mEditTextFirstName.setEnabled(false);
+                mEditTextLastName.setEnabled(false);
+                mEditTextId.setEnabled(false);
+                mButtonAdd.setVisibility(View.GONE);
+                break;
+            case Constants.TYPE_ACTION_FROM_MAIN_ACTIVITY_EDIT:
+                selectButtonOperation=REQUEST_CODE_EDIT;
+                mButtonAdd.setText(Constants.BTN_CHANGE_TEXT_UPDATE);
+                editStudentDetail=(Student) bundle.getSerializable(Constants.STUDENT_DATA);
+                mEditTextFirstName.setText(editStudentDetail.getmFirstName().toUpperCase());
+                mEditTextLastName.setText(editStudentDetail.getmLastName().toUpperCase());
+                mEditTextId.setText(editStudentDetail.getmId().toUpperCase());
+                mEditTextId.setEnabled(false);
+                break;
+        }
     }
     /**
      * This function provide functionalities of add button
@@ -235,23 +235,17 @@ public class StudentDataActivity extends AppCompatActivity {
 
                 switch (select){
                     case ASYNC_TASK:
-                       (new BackSetUpdateData(StudentDataActivity.this)).execute(typeOperation,rollNo,fullName);
-                       finish();
+                       (new BackSetUpdateData(StudentDataActivity.this,StudentDataActivity.this)).execute(typeOperation,rollNo,fullName);
                         break;
                     case SERVICE:
                         Intent service=new Intent(StudentDataActivity.this, SetUpdateDbIntentService.class);
-                        service.putExtra(Constants.TYPE_ACTION_FROM_MAIN_ACTIVITY,typeOperation);
-                        service.putExtra(Constants.ROLL_NO,rollNo);
-                        service.putExtra(Constants.STUDENT_FULL_NAME,fullName);
-                        startService(service);
+                        startServiceFromDialog(service,rollNo,fullName,typeOperation);
 
                         break;
                     case INTENT_SERVICE:
                         Intent intentForService=new Intent(StudentDataActivity.this, SetUpdateDbIntentService.class);
-                        intentForService.putExtra(Constants.TYPE_ACTION_FROM_MAIN_ACTIVITY,typeOperation);
-                        intentForService.putExtra(Constants.ROLL_NO,rollNo);
-                        intentForService.putExtra(Constants.STUDENT_FULL_NAME,fullName);
-                        startService(intentForService);
+                        startServiceFromDialog(intentForService,rollNo,fullName,typeOperation);
+
 
                         break;
                 }
@@ -267,6 +261,12 @@ public class StudentDataActivity extends AppCompatActivity {
         mDialog.show();
 
     }
+    private void startServiceFromDialog(Intent service,final String rollNo, final String fullName, final String typeOperation){
+        service.putExtra(Constants.TYPE_ACTION_FROM_MAIN_ACTIVITY,typeOperation);
+        service.putExtra(Constants.ROLL_NO,rollNo);
+        service.putExtra(Constants.STUDENT_FULL_NAME,fullName);
+        startService(service);
+    }
 
     @Override
     protected void onStart() {
@@ -279,6 +279,12 @@ public class StudentDataActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(studentBroadcastReceiver);
+    }
+
+    @Override
+    public void callBack(String str) {
+        Toast.makeText(this,str,Toast.LENGTH_LONG).show();
+        finish();
     }
 
     public class StudentBroadcastReceiver extends BroadcastReceiver {

@@ -3,30 +3,28 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="20dp"
-    android:layout_marginTop="20dp"
+    android:padding="@dimen/student_adapter_padding"
     android:orientation="vertical"
-    android:background="@color/green_color"
-    android:layout_marginRight="20dp">
+    android:background="@color/green_color">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@android:color/white"
-        android:hint="Name"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="4dp"
+        android:hint="@string/student_adapter_tvHint_name"
+        android:layout_marginLeft="@dimen/student_adapter_marginLeft"
+        android:layout_marginTop="@dimen/student_adapter_marginTop"
         android:textStyle="bold"
-        android:textSize="18sp"
+        android:textSize="@dimen/student_adapter_TextSize"
         android:id="@+id/textName"/>
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:hint="Roll No"
-        android:layout_marginLeft="20dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/student_adapter_tv_hint_rollNo"
+        android:layout_marginLeft="@dimen/student_adapter_marginLeft"
         android:textColor="@android:color/white"
-        android:layout_marginTop="4dp"
-        android:textSize="14sp"
+        android:layout_marginTop="@dimen/student_adapter_marginTop"
+        android:textSize="@dimen/student_adapter_textSize_small"
         android:id="@+id/text"/>
 
 </LinearLayout>
