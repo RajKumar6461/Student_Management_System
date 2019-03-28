@@ -1,7 +1,12 @@
 package com.example.resrrecycleview.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Vibrator;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -48,11 +53,13 @@ public class StudentDataActivity extends AppCompatActivity {
     private Student editStudentDetail;
     private boolean errorHandling;
     private int select;
+    private StudentBroadcastReceiver studentBroadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+        studentBroadcastReceiver=new StudentBroadcastReceiver();
 
         //setting id to edittext and button
         initValues();
@@ -237,7 +244,7 @@ public class StudentDataActivity extends AppCompatActivity {
                         service.putExtra(Constants.ROLL_NO,rollNo);
                         service.putExtra(Constants.STUDENT_FULL_NAME,fullName);
                         startService(service);
-                        finish();
+
                         break;
                     case INTENT_SERVICE:
                         Intent intentForService=new Intent(StudentDataActivity.this, SetUpdateDbIntentService.class);
@@ -245,7 +252,7 @@ public class StudentDataActivity extends AppCompatActivity {
                         intentForService.putExtra(Constants.ROLL_NO,rollNo);
                         intentForService.putExtra(Constants.STUDENT_FULL_NAME,fullName);
                         startService(intentForService);
-                        finish();
+
                         break;
                 }
             }
@@ -261,4 +268,31 @@ public class StudentDataActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter intentFilter = new IntentFilter(Constants.FILTER_ACTION_KEY);
+        LocalBroadcastManager.getInstance(this).registerReceiver(studentBroadcastReceiver,intentFilter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(studentBroadcastReceiver);
+    }
+
+    public class StudentBroadcastReceiver extends BroadcastReceiver {
+        private Bundle sendBundleFromThis;
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+            vibrator.vibrate(Constants.VIBRATE_MILI_SECOND);
+            Toast.makeText(context, intent.getStringExtra(Constants.TYPE_ACTION_FROM_MAIN_ACTIVITY), Toast.LENGTH_SHORT).show();
+            finish();
+
+        }
+
+    }
 }
