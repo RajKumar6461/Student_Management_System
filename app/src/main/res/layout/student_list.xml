@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:padding="@dimen/student_adapter_padding"
     android:orientation="vertical"
+    android:layout_marginTop="10dp"
     android:background="@color/green_color">
 
     <TextView

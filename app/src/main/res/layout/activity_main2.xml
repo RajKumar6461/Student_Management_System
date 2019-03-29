@@ -15,7 +15,7 @@
         android:textColorHint="@android:color/white"
         android:inputType="text"
         android:textSize="@dimen/activity_editText_text_size_20sp"
-        android:padding="@dimen/padding_editText_5dp"
+        android:padding="@dimen/padding_editText_5d"
         android:maxLength="20"
         android:textColor="@android:color/white"
         android:singleLine="true"

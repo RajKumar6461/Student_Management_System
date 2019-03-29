@@ -238,7 +238,7 @@ public class StudentDataActivity extends AppCompatActivity implements BackSetUpd
                        (new BackSetUpdateData(StudentDataActivity.this,StudentDataActivity.this)).execute(typeOperation,rollNo,fullName);
                         break;
                     case SERVICE:
-                        Intent service=new Intent(StudentDataActivity.this, SetUpdateDbIntentService.class);
+                        Intent service=new Intent(StudentDataActivity.this, SetUpdateService.class);
                         startServiceFromDialog(service,rollNo,fullName,typeOperation);
 
                         break;

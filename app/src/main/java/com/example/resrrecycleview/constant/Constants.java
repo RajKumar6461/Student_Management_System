@@ -1,6 +1,6 @@
 package com.example.resrrecycleview.constant;
 
-public final class Constants {
+public  interface Constants {
 
     // used for intent purpose to send data from one activity to other of Student type
     public static final String STUDENT_DATA="student_data";
@@ -52,4 +52,7 @@ public final class Constants {
 
 
     public static final int VIBRATE_MILI_SECOND =500 ;
+
+
 }
+
