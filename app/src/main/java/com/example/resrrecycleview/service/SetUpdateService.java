@@ -18,15 +18,22 @@ public class SetUpdateService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         StudentDatabaseHelper studentDataBaseHelper=new StudentDatabaseHelper(this);
-
-        if(intent.getStringExtra(Constants.TYPE_ACTION_FROM_MAIN_ACTIVITY).equals(Constants.TYPE_ACTION_FROM_MAIN_ACTIVITY_ADD)){
-            studentDataBaseHelper.addData(intent.getStringExtra(Constants.ROLL_NO),intent.getStringExtra(Constants.STUDENT_FULL_NAME));
-        }else if(intent.getStringExtra(Constants.TYPE_ACTION_FROM_MAIN_ACTIVITY).equals(Constants.TYPE_ACTION_FROM_MAIN_ACTIVITY_EDIT)){
-            studentDataBaseHelper.update_name(intent.getStringExtra(Constants.ROLL_NO),intent.getStringExtra(Constants.STUDENT_FULL_NAME));
+        switch (intent.getStringExtra(Constants.TYPE_ACTION_FROM_MAIN_ACTIVITY)){
+            case Constants.TYPE_ACTION_FROM_MAIN_ACTIVITY_ADD:
+                studentDataBaseHelper.addData(intent.getStringExtra(Constants.ROLL_NO),intent.getStringExtra(Constants.STUDENT_FULL_NAME));
+                intent.setAction(Constants.FILTER_ACTION_KEY);
+                break;
+            case Constants.TYPE_ACTION_FROM_MAIN_ACTIVITY_EDIT:
+                studentDataBaseHelper.update_name(intent.getStringExtra(Constants.ROLL_NO),intent.getStringExtra(Constants.STUDENT_FULL_NAME));
+                intent.setAction(Constants.FILTER_ACTION_KEY);
+                break;
+            case Constants.TYPE_ACTION_FROM_MAIN_ACTIVITY_DELETE:
+                studentDataBaseHelper.deleteContact(intent.getStringExtra(Constants.ROLL_NO));
+                intent.setAction(Constants.FILTER_ACTION_KEY_DELETE);
+                break;
         }
-        intent.setAction(Constants.FILTER_ACTION_KEY);
-
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
+
         stopSelf();
         return START_NOT_STICKY;
     }

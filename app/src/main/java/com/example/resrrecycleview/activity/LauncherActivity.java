@@ -54,11 +54,8 @@ import java.util.Collections;
  * @author Raj Kumar Soni
  */
 
-public class MainActivity extends AppCompatActivity implements CommunicationFragments
+public class LauncherActivity extends AppCompatActivity implements CommunicationFragments
 {
-    private static final int LIST_FRAGMENT=0;
-    private static final int ADD_UPDATE_FRAGMENT=1;
-
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
 
@@ -82,14 +79,14 @@ public class MainActivity extends AppCompatActivity implements CommunicationFrag
 
     public void changeTab() {
 
-        if(mViewPager.getCurrentItem()==LIST_FRAGMENT)
+        if(mViewPager.getCurrentItem()==Constants.LIST_FRAGMENT)
         {
-           mViewPager.setCurrentItem(ADD_UPDATE_FRAGMENT);
+           mViewPager.setCurrentItem(Constants.ADD_UPDATE_FRAGMENT);
         }
 
-        else if(mViewPager.getCurrentItem() == ADD_UPDATE_FRAGMENT)
+        else if(mViewPager.getCurrentItem() == Constants.ADD_UPDATE_FRAGMENT)
         {
-            mViewPager.setCurrentItem(LIST_FRAGMENT);
+            mViewPager.setCurrentItem(Constants.LIST_FRAGMENT);
         }
 
 
@@ -97,17 +94,22 @@ public class MainActivity extends AppCompatActivity implements CommunicationFrag
     }
     @Override
     public void communication(Bundle bundle) {
-        if(mViewPager.getCurrentItem()==LIST_FRAGMENT){
-            String tag = "android:switcher:" + R.id.view_pager + ":" + ADD_UPDATE_FRAGMENT;
+        if(mViewPager.getCurrentItem()==Constants.LIST_FRAGMENT){
+            String tag = "android:switcher:" + R.id.view_pager + ":" + Constants.ADD_UPDATE_FRAGMENT;
             AddUpdateFragment f = (AddUpdateFragment) getSupportFragmentManager().findFragmentByTag(tag);
             f.update(bundle);
             changeTab();
-        }else if(mViewPager.getCurrentItem()==ADD_UPDATE_FRAGMENT){
-            String tag = "android:switcher:" + R.id.view_pager + ":" + LIST_FRAGMENT;
+        }else if(mViewPager.getCurrentItem()==Constants.ADD_UPDATE_FRAGMENT){
+            String tag = "android:switcher:" + R.id.view_pager + ":" + Constants.LIST_FRAGMENT;
             StudentListFragment f = (StudentListFragment) getSupportFragmentManager().findFragmentByTag(tag);
             f.update(bundle);
             changeTab();
         }
+    }
+
+    @Override
+    public void changeTabFromFragment() {
+        changeTab();
     }
 }
 

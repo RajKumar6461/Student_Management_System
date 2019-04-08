@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 
+import com.example.resrrecycleview.constant.Constants;
 import com.example.resrrecycleview.model.Student;
 
 import java.util.ArrayList;
@@ -16,36 +17,26 @@ import java.util.ArrayList;
  */
 
 public class StudentDatabaseHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME="studentManagement.db";
-    private static final int DATABASE_VERSION=1;
-    private static final String TABLE_NAME="student";
-    private static final String COL_NAME="Name";
-    private static final String COL_ROLL="Roll_number";
-    private static final String CREATE_TABLE="CREATE TABLE "+TABLE_NAME+"("+COL_ROLL+" TEXT PRIMARY KEY,"+COL_NAME+" TEXT)";
-    private static final String DROP_TABLE=" DROP TABLE IF EXISTS "+TABLE_NAME;
-    private static final String SELECT_ALL_DATA="SELECT * FROM "+TABLE_NAME;
-    private static final String REGEX_FOR_SPLIT=" ";
-    private static final int FIRST_NAME=0;
-    private static final int LAST_NAME=1;
+
 
     /**
      * Constructer to assign context to super class
      * @param context
      */
     public StudentDatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        super(context, Constants.DataBaseMembers.DATABASE_NAME, null, Constants.DataBaseMembers.DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         //execute query for create table
-        db.execSQL(CREATE_TABLE);
+        db.execSQL(Constants.DataBaseMembers.CREATE_TABLE);
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(DROP_TABLE);
+        db.execSQL(Constants.DataBaseMembers.DROP_TABLE);
         onCreate(db);
     }
 
@@ -59,9 +50,9 @@ public class StudentDatabaseHelper extends SQLiteOpenHelper {
     public void addData(String roll_no,String student_name){
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
-        contentValues.put(COL_ROLL,Integer.parseInt(roll_no));
-        contentValues.put(COL_NAME,student_name);
-        db.insert(TABLE_NAME,null,contentValues);
+        contentValues.put(Constants.DataBaseMembers.COL_ROLL,Integer.parseInt(roll_no));
+        contentValues.put(Constants.DataBaseMembers.COL_NAME,student_name);
+        db.insert(Constants.DataBaseMembers.TABLE_NAME,null,contentValues);
     }
 
     /**
@@ -72,15 +63,15 @@ public class StudentDatabaseHelper extends SQLiteOpenHelper {
 
     public ArrayList<Student> getData(){
         SQLiteDatabase db=this.getReadableDatabase();
-        Cursor cursor=db.rawQuery(SELECT_ALL_DATA,null);
+        Cursor cursor=db.rawQuery(Constants.DataBaseMembers.SELECT_ALL_DATA,null);
         ArrayList<Student> arrayOfstore=new ArrayList<Student>();
         String roll_no;
         String fullName;
         while(cursor.moveToNext()){
-            roll_no=cursor.getString(cursor.getColumnIndex(COL_ROLL));
-            fullName=cursor.getString(cursor.getColumnIndex(COL_NAME));
-            String name_divided[]=fullName.split(REGEX_FOR_SPLIT);
-            Student studentDetails=new Student(name_divided[FIRST_NAME],name_divided[LAST_NAME],roll_no);
+            roll_no=cursor.getString(cursor.getColumnIndex(Constants.DataBaseMembers.COL_ROLL));
+            fullName=cursor.getString(cursor.getColumnIndex(Constants.DataBaseMembers.COL_NAME));
+            String name_divided[]=fullName.split(Constants.DataBaseMembers.REGEX_FOR_SPLIT);
+            Student studentDetails=new Student(name_divided[Constants.DataBaseMembers.FIRST_NAME],name_divided[Constants.DataBaseMembers.LAST_NAME],roll_no);
             arrayOfstore.add(studentDetails);
         }
         return arrayOfstore;
@@ -93,7 +84,7 @@ public class StudentDatabaseHelper extends SQLiteOpenHelper {
 
     public void deleteContact(String rollNo) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_NAME, COL_ROLL + " = ?", new String[] { String.valueOf(rollNo) });
+        db.delete(Constants.DataBaseMembers.TABLE_NAME, Constants.DataBaseMembers.COL_ROLL + " = ?", new String[] { String.valueOf(rollNo) });
         db.close();
     }
 
@@ -106,8 +97,8 @@ public class StudentDatabaseHelper extends SQLiteOpenHelper {
     public void update_name(String rollNo,String name){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(COL_NAME,name);
-        db.update(TABLE_NAME, cv, COL_ROLL+" = ?", new String[]{rollNo});
+        cv.put(Constants.DataBaseMembers.COL_NAME,name);
+        db.update(Constants.DataBaseMembers.TABLE_NAME, cv, Constants.DataBaseMembers.COL_ROLL+" = ?", new String[]{rollNo});
         db.close();
     }
 }

@@ -12,7 +12,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".activity.StudentDataActivity"
                     android:screenOrientation="portrait"></activity>
-        <activity android:name=".activity.MainActivity"
+        <activity android:name=".activity.LauncherActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,7 +24,7 @@
             android:exported="false"/>
         <service android:name=".service.SetUpdateService"
             android:exported="false"/>
-        <receiver android:name=".fragment.AddUpdateFragment$StudentBroadcastReceiver" />
+        <receiver android:name=".broadcast.StudentBroadcastReceiver" />
     </application>
 
 </manifest>
