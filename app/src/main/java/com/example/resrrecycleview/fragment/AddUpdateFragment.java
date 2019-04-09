@@ -164,8 +164,12 @@ public class AddUpdateFragment extends Fragment implements SendCallBack {
         }
     }
 
+    /**
+     * This method used to clear Edit Text data
+     */
+
     private void clearAllEditText(){
-        mEditTextFirstName.setText("");
+        mEditTextFirstName.getText().clear();
         mEditTextLastName.setText("");
         mEditTextId.setText("");
     }
@@ -203,8 +207,10 @@ public class AddUpdateFragment extends Fragment implements SendCallBack {
     }
 
     /**
+     *This method is called from launcher activity for cummunication and data send
+     * Check the action from launcher and set button on click operation
      *
-     * @param bundleNew of bundle type having data from another activity
+     * @param bundleNew of bundle type having data from fragment
      */
     public void update(Bundle bundleNew){
         bundle=bundleNew;

@@ -15,54 +15,24 @@
         tools:context=".activity.StudentDataActivity">
 
         <EditText
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/activity2_editText_height_50dp"
+            style="@style/EditTextStyle"
             android:hint="Enter First Name"
-            android:textColorHint="@android:color/white"
             android:inputType="text"
-            android:textSize="@dimen/activity_editText_text_size_20sp"
-            android:padding="@dimen/padding_editText_5dp"
             android:maxLength="20"
-            android:textColor="@android:color/white"
-            android:singleLine="true"
-            android:background="@color/colorPrimaryDark"
-            android:layout_marginTop="@dimen/margin_30dp"
-            android:layout_marginLeft="@dimen/margin_10dp"
-            android:layout_marginRight="@dimen/margin_10dp"
             android:id="@+id/editFirstName" />
 
         <EditText
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/activity2_editText_height_50dp"
+           style="@style/EditTextStyle"
             android:hint="Enter Last  Name"
             android:maxLength="20"
-            android:background="@color/colorPrimaryDark"
             android:inputType="text"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/activity_editText_text_size_20sp"
-            android:textColorHint="@android:color/white"
-            android:padding="@dimen/padding_editText_5dp"
-            android:singleLine="true"
-            android:layout_marginTop="@dimen/margin_30dp"
-            android:layout_marginLeft="@dimen/margin_10dp"
-            android:layout_marginRight="@dimen/margin_10dp"
             android:id="@+id/editLastName" />
 
         <EditText
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/activity2_editText_height_50dp"
+            style="@style/EditTextStyle"
             android:hint="Roll No"
-            android:background="@color/colorPrimaryDark"
             android:inputType="number"
-            android:padding="@dimen/padding_editText_5dp"
             android:maxLength="8"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/activity_editText_text_size_20sp"
-            android:textColorHint="@android:color/white"
-            android:singleLine="true"
-            android:layout_marginTop="@dimen/margin_30dp"
-            android:layout_marginLeft="@dimen/margin_10dp"
-            android:layout_marginRight="@dimen/margin_10dp"
             android:id="@+id/edit_Id" />
 
         <Button
@@ -72,6 +42,7 @@
             android:text="ADD"
             android:layout_gravity="center"
             android:textSize="@dimen/add_fragment_btn_text_size"
+            android:gravity="center"
             android:textColor="@android:color/white"
             android:padding="@dimen/padding_4dp"
             android:layout_marginVertical="@dimen/add_fragment_btn_marginVertical"

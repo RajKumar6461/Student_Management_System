@@ -18,5 +18,6 @@
     <string name="add_update_fragment_tab_title">Add/Update</string>
     <string name="student_list_tv_hint">Roll No</string>
     <string name="student_list_tv_hint_name">Name</string>
+    <string name="android_switcher">android:switcher:</string>
 
 </resources>

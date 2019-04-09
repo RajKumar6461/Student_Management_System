@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
-
 import com.example.resrrecycleview.R;
 import com.example.resrrecycleview.asynctask.BackSetUpdateData;
 import com.example.resrrecycleview.constant.Constants;
@@ -32,7 +31,6 @@ public class GenerateDialog {
      * @param typeOperation
      */
     public void generateAlertDialog(final String rollNo, final String fullName, final String typeOperation){
-        Log.d("generate", "generateAlertDialog: "+"1");
         final AlertDialog.Builder mBuilder=new AlertDialog.Builder(mContext);
         switch (typeOperation){
             case Constants.TYPE_ACTION_FROM_MAIN_ACTIVITY_ADD:
@@ -50,7 +48,6 @@ public class GenerateDialog {
             public void onClick(DialogInterface dialog,int which) {
 
                 select=which;
-                Log.d("generate", "generateAlertDialog: "+"2");
 
                 dialog.dismiss();
 
@@ -63,8 +60,6 @@ public class GenerateDialog {
                         startServiceWork(service,rollNo,fullName,typeOperation);
                         break;
                     case Constants.AddUpdateFragmentMember.INTENT_SERVICE:
-                        Log.d("generate", "generateAlertDialog: "+"3");
-
                         Intent intentForService=new Intent(mContext, SetUpdateDbIntentService.class);
                         startServiceWork(intentForService,rollNo,fullName,typeOperation);
                         break;
@@ -86,8 +81,6 @@ public class GenerateDialog {
         service.putExtra(Constants.TYPE_ACTION_FROM_MAIN_ACTIVITY,typeOperation);
         service.putExtra(Constants.ROLL_NO,rollNo);
         service.putExtra(Constants.STUDENT_FULL_NAME,fullName);
-        Log.d("generate", "generateAlertDialog: "+"4");
-
         mContext.startService(service);
     }
 }

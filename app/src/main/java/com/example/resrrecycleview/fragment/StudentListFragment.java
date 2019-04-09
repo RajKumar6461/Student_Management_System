@@ -76,19 +76,22 @@ public class StudentListFragment extends Fragment implements SendCallBack{
         studentBroadcastReceiver.setCallBackDelete((SendCallBack)this);
         mStudentDatabaseHelper=new StudentDatabaseHelper(mContext);
         mStudent=mStudentDatabaseHelper.getData();
+        generateDialog=new GenerateDialog(mContext,(SendCallBack) this);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view= inflater.inflate(R.layout.fragment_student_list, container, false);
-        generateDialog=new GenerateDialog(mContext,(SendCallBack) this);
         initValues();
         setHasOptionsMenu(true);
+
+
         mButtonAddCuurent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // do something when the corky2 is clicked
+
                 Bundle bundle=new Bundle();
                 bundle.putSerializable(Constants.STUDENT_DATA_List,mStudent);
                 bundle.putString(Constants.TYPE_ACTION_FROM_MAIN_ACTIVITY,Constants.TYPE_ACTION_FROM_MAIN_ACTIVITY_ADD);
@@ -124,7 +127,7 @@ public class StudentListFragment extends Fragment implements SendCallBack{
                         bundle.putSerializable(Constants.STUDENT_DATA,mStudent.get(pos));
                         positionClickStudentData=pos;
                         mListener.communication(bundle);
-                        //set adapter position of item Clicked
+
                         break;
                     case Constants.StudentListFragmentMamber.DELETE:
                         positionClickStudentData=pos;
@@ -167,7 +170,10 @@ public class StudentListFragment extends Fragment implements SendCallBack{
 
     }
 
-
+    /**
+     * call the generate Dialog function for
+     * @param pos of int type provide possition of recycle view item clicked
+     */
     private void deleteDialog(final int pos){
         generateDialog.generateAlertDialog(mStudent.get(pos).getmId(),mStudent.get(pos).getmFirstName()+" "+mStudent.get(pos).getmLastName(),Constants.TYPE_ACTION_FROM_MAIN_ACTIVITY_DELETE);
 

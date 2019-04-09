@@ -4,15 +4,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.example.resrrecycleview.R;
+import com.example.resrrecycleview.constant.Constants;
 import com.example.resrrecycleview.fragment.AddUpdateFragment;
 import com.example.resrrecycleview.fragment.StudentListFragment;
 
 public class ViewPagerAdapter  extends FragmentPagerAdapter {
     
-    private final static int LIST_FRAGMENT=0;
-    private final static int ADD_UPDATE_FRAGMENT=1;
-    private final static int TOTAL_FRAGMENT=2;
+
 
 
 
@@ -24,9 +22,10 @@ public class ViewPagerAdapter  extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position)
         {
-            case LIST_FRAGMENT:
+            case Constants
+                    .ViewPagerAdapterMember.LIST_FRAGMENT:
                 return new StudentListFragment(); //ChildFragment1 at position 0
-            case ADD_UPDATE_FRAGMENT:
+            case Constants.ViewPagerAdapterMember.ADD_UPDATE_FRAGMENT:
                 return new AddUpdateFragment(); //ChildFragment2 at position 1
         }
         return null;
@@ -34,17 +33,18 @@ public class ViewPagerAdapter  extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return TOTAL_FRAGMENT; //two fragments
+        return Constants.ViewPagerAdapterMember.TOTAL_FRAGMENT; //two fragments
     }
 
 
     @Override
     public CharSequence getPageTitle(int position) {
         switch (position){
-            case LIST_FRAGMENT:
-                return ("Student List");
-            case ADD_UPDATE_FRAGMENT:
-                return "Add/Update";
+            case Constants
+                    .ViewPagerAdapterMember.LIST_FRAGMENT:
+                return Constants.ViewPagerAdapterMember.STUDENT_LIST_TAB_TITLE;
+            case Constants.ViewPagerAdapterMember.ADD_UPDATE_FRAGMENT:
+                return Constants.ViewPagerAdapterMember.ADD_UPDATE_TAB_TITLE;
         }
         return null;
     }

@@ -95,12 +95,12 @@ public class LauncherActivity extends AppCompatActivity implements Communication
     @Override
     public void communication(Bundle bundle) {
         if(mViewPager.getCurrentItem()==Constants.LIST_FRAGMENT){
-            String tag = "android:switcher:" + R.id.view_pager + ":" + Constants.ADD_UPDATE_FRAGMENT;
+            String tag = getString(R.string.android_switcher) + R.id.view_pager + ":" + Constants.ADD_UPDATE_FRAGMENT;
             AddUpdateFragment f = (AddUpdateFragment) getSupportFragmentManager().findFragmentByTag(tag);
             f.update(bundle);
             changeTab();
         }else if(mViewPager.getCurrentItem()==Constants.ADD_UPDATE_FRAGMENT){
-            String tag = "android:switcher:" + R.id.view_pager + ":" + Constants.LIST_FRAGMENT;
+            String tag = getString(R.string.android_switcher) + R.id.view_pager + ":" + Constants.LIST_FRAGMENT;
             StudentListFragment f = (StudentListFragment) getSupportFragmentManager().findFragmentByTag(tag);
             f.update(bundle);
             changeTab();
